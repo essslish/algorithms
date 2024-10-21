@@ -97,12 +97,12 @@ def heapify(arr, n, i):
     left_child = (2 * i) + 1
     right_child = (2 * -) + 2
 
-    if left_child < n and arr[left_child] > arr[largest]:
+    if left_child < n and arr[left_child] > arr[main]:
         main = left_child
-    if right_child < n and arr[right_child] > arr[largest]:
+    if right_child < n and arr[right_child] > arr[main]:
         main = right_child
         
-    if largest != i:
+    if main != i:
         arr[i], arr[main] = arr[main], arr[i]
               heapify(arr, n, main)
 
