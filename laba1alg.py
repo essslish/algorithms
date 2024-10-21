@@ -95,7 +95,7 @@ def quick_sort(arr):
 def heapify(arr, n, i):  
     main = i
     left_child = (2 * i) + 1
-    right_child = (2 * -) + 2
+    right_child = (2 * i) + 2
 
     if left_child < n and arr[left_child] > arr[main]:
         main = left_child
