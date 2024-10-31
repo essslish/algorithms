@@ -5,10 +5,11 @@
 
 
 import random
-import time
-import matplotlib
+from time import *
+import numpy as np
 import matplotlib.pyplot as plt
-from collections import defaultdict
+from random import randint, seed
+from math import *
                 
 # Сортировка выбором
 def selection_sort(arr):
@@ -118,14 +119,12 @@ def fill_array(arr):
     for i in range(len(arr)):
         arr[i] = random.randint(-len(arr), len(arr))
 
-def almost_sorted(arr):
-    sorted_array = list(range(len(arr)))
-    num_unsorted_elements = len(arr) // 10
-    random_idx = random.sample(range(len(arr)), num_unsorted_elements)
-    for idx in random_idx:
-        swap_with = random.randint(0, len(arr)-1)
-        sorted_array[idx], sorted_array[swap_with] = sorted_array[swap_with], sorted_array[idx]
-    return sorted_array
+def almost_sorted(q,_seed):
+    a = [i for i in range(1,q-ceil((q*0.1))+1)]
+    seed(_seed)
+    for j in range(0, ceil(q*0.1)):
+        a.append(randint(0, q//2))
+    return a
 
 def beg_sort(arr):
     current_value = random.randint(-len(arr), len(arr)) 
@@ -143,97 +142,35 @@ def back_sorted(arr):
                 arr[j], arr[j + 1] = arr[j + 1], arr[j]
     return arr
     
-def running_time(action, arr):
-    start_time = time.time()
-    action(arr)
-    return (time.time() - start_time) * 1000 
-
-def display_statistics():
-    results = defaultdict(int)
-    results1 = defaultdict(int)
-    results2 = defaultdict(int)
-    results3 = defaultdict(int)
-
-    # Сбор результатов - в running_time поменять на функцию нужной сортировки
-    for i in range(1000, 10000, 200):
-        ar = [0] * i
-        fill_array(ar)
-        results[i] = running_time(selection_sort, ar)
-    for i in range(1000, 10000, 200):
-        ar1 = [0] * i
-        beg_sort(ar1)
-        results1[i] = running_time(selection_sort, ar1)
-    for i in range(1000, 10000, 200):
-        ar2 = [0] * i
-        almost_sorted(ar2)
-        results2[i] = running_time(selection_sort, ar2)
-    for i in range(10000, 1000, -200):
-        ar3 = [0] * i
-        back_sorted(ar3)
-        results3[i] = running_time(selection_sort, ar3)
-
-    # Обработка данных для графика
-    sizes = list(results.keys())
-    times = list(results.values())
-    
-    sizes1 = list(results1.keys())
-    times1 = list(results1.values())
-    
-    sizes2 = list(results2.keys())
-    times2 = list(results2.values())
-    
-    sizes3 = list(results3.keys())
-    times3 = list(results3.values())
-
-    plt.figure(figsize=(12, 6))
-    
-    plt.subplot(1, 4, 1) 
-    plt.plot(sizes, times, label='Для произвольного массива', marker='o')
-    plt.title('Время сортировки в зависимости от размера массива')
-    plt.xlabel('Размер массива')
-    plt.ylabel('Время сортировки, мс')
-    plt.legend()
-    plt.grid()
-    
-    plt.subplot(1, 4, 2)  
-    plt.plot(sizes1, times1, label='Для отсортированного массива', marker='o')
-    plt.title('Время сортировки в зависимости от размера массива')
-    plt.xlabel('Размер массива')
-    plt.ylabel('Время сортировки, мс')
-    plt.legend()
-    plt.grid()
-    
-    plt.subplot(1, 4, 3) 
-    plt.plot(sizes2, times2, label='Для почти отсортированного массива', marker='o')
-    plt.title('Время сортировки в зависимости от размера массива')
-    plt.xlabel('Размер массива')
-    plt.ylabel('Время сортировки, мс')
-    plt.legend()
-    plt.grid()
-    
-    plt.subplot(1, 4, 4)  
-    plt.plot(sizes3, times3, label='Для массива, отсортированного обратно', marker='o')
-    plt.title('Время сортировки в зависимости от размера массива')
-    plt.xlabel('Размер массива')
-    plt.ylabel('Время сортировки, мс')
-    plt.legend()
-    plt.grid()
-   
-
-    plt.tight_layout()  # Компактное размещение графиков
-    plt.show()
-
-if __name__ == "__main__":
-    display_statistics()
-
-
-# In[ ]:
+time_arr = []
+x_arr = []
+for i in range(0, 6001, 66):
+    arr = [0] * i
+    back_sorted(arr)
+    #arr= almost_sorted(i,41) #когда нужен почти отсортированный массив
+    start_time = time()
+    heap_sort(arr) #менять название сортировки
+    finish_time = time()
+    time_arr.append(finish_time-start_time)
+    x_arr.append(i)
 
 
 
+p = np.polyfit(x_arr, time_arr, 2)
+# Создаем фигуру для графиков
+plt.figure(figsize=(10, 6))
+plt.scatter(x_arr,time_arr)
+# Настройка графика
+plt.title('Обратно отсортированный массив')
+plt.xlabel('Размер входных данных n')
+plt.ylabel('Время выполнения T(n)')
+plt.legend()  # Добавляем легенду
+plt.grid()    # Добавляем сетку
+# Показываем график
+plt.plot(x_arr, np.polyval(p, x_arr), color='red')
 
-
-# In[ ]:
+plt.tight_layout()
+plt.show()
 
 
 
