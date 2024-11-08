@@ -93,7 +93,7 @@ def quick_sort(arr):
     return quick_sort(left) + middle + quick_sort(right)        
         
 # Пирамидальная сортировка         
-def heapify(arr, n, i):  
+def heapify(arr, n, i):
     main = i
     left_child = (2 * i) + 1
     right_child = (2 * i) + 2
@@ -102,14 +102,14 @@ def heapify(arr, n, i):
         main = left_child
     if right_child < n and arr[right_child] > arr[main]:
         main = right_child
-        
+
     if main != i:
         arr[i], arr[main] = arr[main], arr[i]
-              heapify(arr, n, main)
+        heapify(arr, n, main)
 
-def heap_sort(arr):  
+def heap_sort(arr):
     n = len(arr)
-    for i in range(n, -1, -1):
+    for i in range(n//2, -1, -1):
         heapify(arr, n, i)
     for i in range(n - 1, 0, -1):
         arr[i], arr[0] = arr[0], arr[i]
