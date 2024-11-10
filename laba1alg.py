@@ -82,6 +82,56 @@ def shell_sort(arr):
             arr[j] = temp
         gap //= 2 
 
+def pratt_sequence(n):
+    sequence = []
+    i, j = 0, 0
+    while True:
+        value = (2 ** i) * (3 ** j)
+        if value > n:
+            break
+        sequence.append(value)
+        if i < j:
+            j += 1
+        else:
+            i += 1
+    return sorted(sequence)
+
+#сортировка Шелла с последовательностью Пратта
+def shell_sort_pratt(arr):
+    n = len(arr)
+    gaps = pratt_sequence(n)
+    
+    for gap in reversed(gaps):
+        for i in range(gap, n):
+            temp = arr[i]
+            j = i
+            while j >= gap and arr[j - gap] > temp:
+                arr[j] = arr[j - gap]
+                j -= gap
+            arr[j] = temp
+
+def hibbard_sequence(n):
+    sequence = []
+    k = 1
+    while (2 ** k) - 1 < n:
+        sequence.append((2 ** k) - 1)
+        k += 1
+    return sequence
+
+#сортировка Шелла с последовательностью Хиббарда
+def shell_sort_hibbard(arr):
+    n = len(arr)
+    gaps = hibbard_sequence(n)
+    
+    for gap in reversed(gaps):
+        for i in range(gap, n):
+            temp = arr[i]
+            j = i
+            while j >= gap and arr[j - gap] > temp:
+                arr[j] = arr[j - gap]
+                j -= gap
+            arr[j] = temp
+
 # Быстрая сортировка
 def quick_sort(arr):
     if len(arr) <= 1:
